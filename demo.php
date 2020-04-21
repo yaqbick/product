@@ -1,22 +1,24 @@
 <?php
 require(__DIR__.'/vendor/autoload.php');
-include(__DIR__.'/vendor/moneyphp/money/src/Money.php');
 use Zadanie3\Product;
 use Zadanie3\Bundle;
+use Zadanie3\Discounted;
+use Money\Money;
 
-
-
-$product1 = new Product("produkt 1", Money::PLN(10000));
-$product2 = new Product("produkt 2", Money::PLN(10000));
-$bundle1 = new Bundle('zestaw 1');
-$bundle1->addProduct($product1);
-$totalPrice = Money::PLN(0);
-
+$product1 = new Product("produkt 1", Money::EUR(10000));
+$product2 = new Product("produkt 2",Money::EUR(10000));
+$bundle1 = new Bundle('zestaw 1',$product1);
+$bundle1->addProduct($product2);
+$discounted1 = new Discounted($product1,30);
+$discounted2 = new Discounted($product2,60);
+$totalPrice = Money::EUR(0);
 
 $products = [
     $product1,
     $product2,
-    $bundle1
+    $bundle1,
+    $discounted1,
+    $discounted2
 ];
 
 foreach ($products as $product) {
@@ -25,4 +27,4 @@ foreach ($products as $product) {
     $totalPrice = $totalPrice->add($product->getPrice());
 }
 
-echo $totalPrice; 
+echo "total price: ".$totalPrice->getAmount(); 

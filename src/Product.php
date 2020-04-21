@@ -1,6 +1,6 @@
 <?php
 namespace Zadanie3;
-
+use Money\Money;
 class Product implements IProduct
 {
     protected $name;
