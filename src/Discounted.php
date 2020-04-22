@@ -10,14 +10,15 @@ class Discounted implements IProduct
     protected $money;
     protected $discount;
 
-    public function __construct(Product $product, float $discount)
+    public function __construct(IProduct $product, float $discount)
     {
         if ($discount <= 0 || $discount > 100 ) {
             throw new Exception($amount . 'Discount must be greater than 0 and smaller than 100');
         }
-        $this->name =$product->getName().' with discount '.$discount.'%';
-        $this->money =$product->getPrice();
+        $this->name = $product->getName();
         $this->discount = (100-$discount)/100;
+        $this->calculateDiscount($product->getPrice());
+   
     }
 
     public function getName(): string
@@ -27,7 +28,11 @@ class Discounted implements IProduct
 
     public function getPrice(): Money
     {
-        $this->money = $this->money->multiply($this->discount);
         return $this->money;
+    }
+
+    public function calculateDiscount(Money $money): void
+    {
+        $this->money = $money->multiply($this->discount);
     }
 }

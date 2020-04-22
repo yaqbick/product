@@ -7,11 +7,13 @@ class Bundle implements IProduct
 {
     protected $name;
     protected $money;
+    protected $items;
 
-    public function __construct(string $name,Product $product)
+    public function __construct(string $name,IProduct $product)
     {
         $this->name = $name;
         $this->money = $product->getPrice();
+        $this->items = [$product];
     }
 
     public function getName(): string
@@ -24,10 +26,16 @@ class Bundle implements IProduct
         return $this->money;
     }
 
-    public function addProduct(Product $product)
+    public function getItems()
+    {
+        return $this->items;
+    }
+
+    public function addProduct(IProduct $product)
     {
         if($this->money->isSameCurrency($product->getPrice()))
         {
+            array_push($this->items,$product); 
             $this->money = $this->getPrice()->add($product->getPrice());
         }
         else
