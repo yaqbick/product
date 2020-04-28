@@ -1,6 +1,9 @@
 <?php
+
 namespace Zadanie3;
+
 use Money\Money;
+
 class Product implements IProduct
 {
     protected $name;
@@ -21,5 +24,4 @@ class Product implements IProduct
     {
         return $this->money;
     }
-
 }

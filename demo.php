@@ -26,11 +26,11 @@ $products = [
 foreach ($products as $product) {
     echo $product->getName() . PHP_EOL;
     echo $product->getPrice()->getAmount() . PHP_EOL;
-    
+
     $totalPrice = $totalPrice->add($product->getPrice());
 }
 
-echo "total price: ".$totalPrice->getAmount(). PHP_EOL; 
+echo "total price: ".$totalPrice->getAmount(). PHP_EOL;
 // $items =  $bundle1->getItems();
 // foreach ($items as $item)
 // {

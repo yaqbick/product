@@ -1,19 +1,29 @@
 <?php
+
 namespace Zadanie3;
+
 use Money\Money;
 use Exception;
 
 class Bundle implements IProduct
 {
     protected $name;
-    protected $money;
+    /** @var IProduct[] */
     protected $items;
+    /** @var Money */
+    protected $totalValue;
 
-    public function __construct(string $name,IProduct $product)
+    public function __construct(string $name, array $products)
     {
         $this->name = $name;
-        $this->money = $product->getPrice();
-        $this->items = [$product];
+        //todo: obsłuzenie czy produkty maja ta sama walute
+        foreach ($products as $product) {
+            if($product instanceof IProduct){
+                $this->items []= $product;
+            } else {
+                throw new Exception('');
+            }
+        }
     }
 
     public function getName(): string
@@ -23,7 +33,7 @@ class Bundle implements IProduct
 
     public function getPrice(): Money
     {
-        return $this->money;
+        return $this->totalValue;
     }
 
     public function getItems()
@@ -33,14 +43,12 @@ class Bundle implements IProduct
 
     public function addProduct(IProduct $product)
     {
-        if($this->money->isSameCurrency($product->getPrice()))
+        if($this->totalValue->isSameCurrency($product->getPrice()))
         {
-            array_push($this->items,$product); 
-            $this->money = $this->getPrice()->add($product->getPrice());
-        }
-        else
-        {
-            throw new Exception($amount . 'Currency must be the same for both products!');
+            array_push($this->items,$product); //zmiana na operator []=
+            $this->totalValue->add($product->getPrice());
+        } else {
+            throw new Exception( 'Currency must be the same for both products!');
         }
     }
 }
